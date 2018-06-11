@@ -66,9 +66,7 @@ dV = lambda I: (I - g_L * (V - V_L) - g_Ca * M_ss() * (V - V_Ca) - g_K * N * (V 
 dN = lambda: (N_ss() - N) / T_N()
 
 #Load current data from file
-current = map(np.float64, open(current_file, "r").read().split("\n"))
-
-print("current", current)
+current = list(map(np.float64, open(current_file, "r").read().split("\n")))
 
 #Equations for the input of each channel
 L = lambda: - g_L * (V - V_L)
@@ -77,8 +75,6 @@ K = lambda: - g_K * N * (V - V_K)
 
 for t, I in zip(range(len(current)), current):
 	#Update variables
-	print(I - 100000)
-	print(map(type, [I, g_L, V, V_L, g_Ca, M_ss(), V_Ca, g_K, N, V_K, C]))
 	V = V + dV(I)
 	N = N + dN()
 	#Print out important values
