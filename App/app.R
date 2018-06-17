@@ -80,25 +80,25 @@ ui <- fluidPage(
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
       sidebarPanel(
-         numericInput("C", "Capacitance", 6.69810502993),
-         numericInput("V_1", "Tuning Variable 1", 30),
-         numericInput("V_2", "Tuning Variable 2", 15),
-         numericInput("V_3", "Tuning Variable 3", 0),
-         numericInput("V_4", "Tuning Variable 4", 30),
-         numericInput("phi", "Reference Frequency", 0.025),
-         numericInput("V_L", "Lithium Ion Channel Equilibrium Potential", -50),
-         numericInput("V_Ca", "Calcium Ion Channel Equilibrium Potential", 100),
-         numericInput("V_K", "Potassium Ion Channel Equilibrium Potential", -70),
-         numericInput("g_L", "Lithium Conductance through Membrane", 0.5),
-         numericInput("g_Ca", "Calcium Conductance through Membrane", 1.1),
-         numericInput("g_K", "Potassium Conductance through Membrane", 2),
-         numericInput("V", "Initial Membrane Potential", -52.14),
-         numericInput("N", "Initial Recovery Variable", 0.02),
+         numericInput("C", "Capacitance (C)", 6.69810502993),
+         numericInput("V_1", "Tuning Variable 1 (V_1)", 30),
+         numericInput("V_2", "Tuning Variable 2 (V_2)", 15),
+         numericInput("V_3", "Tuning Variable 3 (V_3)", 0),
+         numericInput("V_4", "Tuning Variable 4 (V_4)", 30),
+         numericInput("phi", "Reference Frequency (phi)", 0.025),
+         numericInput("V_L", "Lithium Ion Channel Equilibrium Potential (V_L)", -50),
+         numericInput("V_Ca", "Calcium Ion Channel Equilibrium Potential (V_Ca)", 100),
+         numericInput("V_K", "Potassium Ion Channel Equilibrium Potential (V_K)", -70),
+         numericInput("g_L", "Lithium Conductance through Membrane (g_L)", 0.5),
+         numericInput("g_Ca", "Calcium Conductance through Membrane (g_Ca)", 1.1),
+         numericInput("g_K", "Potassium Conductance through Membrane (g_K)", 2),
+         numericInput("V", "Initial Membrane Potential (V)", -52.14),
+         numericInput("N", "Initial Recovery Variable (N)", 0.02),
          numericInput("len_current", "Length of Input Stimulus", 1000),
-         textInput("expr_current", "Current Expression (Use t as variable)", "t"),
+         textInput("expr_current", "Current Expression (Use t as variable)", "if(t>100 & t <200) {1} else {0}"),
          radioButtons("choices", "Variable to Plot", c(
            "I", "V", "N", "L", "Ca", "K", "N_ss", "T_N"
-         )),
+         ), selected = "V", inline = TRUE),
          submitButton("Run Model")
       ),
       
@@ -106,7 +106,8 @@ ui <- fluidPage(
       mainPanel(
          plotOutput("currentPlot"),
          plotOutput("linePlot"),
-         plotOutput("phasePortrait")
+         plotOutput("phasePortrait"),
+         verbatimTextOutput("info")
       )
    )
 )
@@ -158,11 +159,15 @@ server <- function(input, output) {
     #Run the model
     data <- run_model(current, params = input)
     
-    print(data)
-    
     #Plot phase portrait
     plot(data$N, data$V, type='l', main="Phase Portrait", xlab = "Recovery Variable(N)", ylab = "Membrane Potential (V)")
   })
+  
+  output$info <- renderText(
+    "Explanation of this model can be found at:  http://www.scholarpedia.org/article/Morris-Lecar_model/.
+For further exploration, check out this notebook: https://github.com/jonmarty/Morris-Lecar/blob/master/MorrisLecar.ipynb/.
+Code for this model can be found at https://github.com/jonmarty/Morris-Lecar/"
+  )
 }
 
 # Run the application 
