@@ -1,0 +1,12 @@
+name: MorrisLecar
+title: MorrisLecar
+username:
+account: jonmarty
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 362091
+bundleId: 1433473
+url: https://jonmarty.shinyapps.io/MorrisLecar/
+when: 1529211028.83786
+asMultiple: FALSE
+asStatic: FALSE
