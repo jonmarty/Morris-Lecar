@@ -21,7 +21,7 @@ inputs = {
 
 #Create the command
 command = ["python","MorrisLecar.py"]
-for arg, val in inputs.iteritems():
+for arg, val in inputs.items():
 	command.append("-" + arg)
 	command.append(str(val))
 
